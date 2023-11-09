@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -40,8 +41,8 @@ public class AdvancedTagLoader {
         return builder.build();
     }
 
-    private static String encodeSource(String source, AdvancedTagFile file) {
-        return source + ":" + file.action();
+    private static String encodeSource(String source, TagModificationAction action) {
+        return source + ":" + action;
     }
 
     private static TagModificationAction decodeSource(String source) {
@@ -61,9 +62,12 @@ public class AdvancedTagLoader {
                 var result = AdvancedTagFile.CODEC.parse(JsonOps.INSTANCE, json);
                 var tag = result.getOrThrow(false, Constants.LOGGER::error);
 
+                var next = Stream.of(
+                        tag.values().stream().map(it -> new TagLoader.EntryWithSource(it, encodeSource(source, TagModificationAction.ADD))),
+                        tag.remove().stream().map(it -> new TagLoader.EntryWithSource(it, encodeSource(source, TagModificationAction.REMOVE)))
+                ).flatMap(Function.identity());
 
-                var next = tag.entries().stream().map(it -> new TagLoader.EntryWithSource(it, encodeSource(source, tag)));
-                if (tag.action() == TagModificationAction.REPLACE) return next.toList();
+                if (tag.replace()) return next.collect(Collectors.toCollection(ArrayList::new));
 
                 next.forEach(previous::add);
                 return previous;
@@ -93,7 +97,7 @@ public class AdvancedTagLoader {
             }
         }
 
-        if(!missingEntries.isEmpty()) return Either.left(missingEntries);
+        if (!missingEntries.isEmpty()) return Either.left(missingEntries);
 
         var removed = byAction.getOrDefault(TagModificationAction.REMOVE, List.of());
         var added = byAction.getOrDefault(TagModificationAction.ADD, List.of());

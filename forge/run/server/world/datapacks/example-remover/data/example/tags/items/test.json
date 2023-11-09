@@ -1,6 +1,5 @@
 {
-  "action": "remove",
-  "values": [
+  "remove": [
     "#minecraft:logs_that_burn"
   ]
 }
