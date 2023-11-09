@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:stone",
+    {
+      "id": "something:else",
+      "required": false
+    },
+    {
+      "id": "#minecraft:logs",
+      "required" : true
+    }
+  ]
+}

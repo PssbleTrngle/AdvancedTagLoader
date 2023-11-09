@@ -1,0 +1,6 @@
+{
+  "pack": {
+    "description": "example datapack using the advanced tag loader",
+    "pack_format": 10
+  }
+}

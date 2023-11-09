@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.possible_triangle.advanced_tag_loader.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "${mod_id}.refmap.json",
+  "mixins": ["TagLoaderAccessor", "TagLoaderMixin"],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
