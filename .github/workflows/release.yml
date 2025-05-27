@@ -39,5 +39,5 @@ jobs:
           arguments: build modrinth publish
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CHANGELOG: ${{ github.event.release.body }}
-          CI: true
