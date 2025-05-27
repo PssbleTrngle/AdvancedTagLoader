@@ -3,10 +3,6 @@ plugins {
 }
 
 subprojects {
-    repositories {
-        mavenCentral()
-    }
-
     enablePublishing {
         githubPackages()
     }
